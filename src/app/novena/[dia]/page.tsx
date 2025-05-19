@@ -1,5 +1,7 @@
 // No se necesita useRouter ni "use client" para Server Components
 
+import Link from "next/link";
+
 // Esta es una plantilla básica. Deberás crear contenido específico para cada día.
 // Cambiamos la firma para recibir params como un Server Component
 const DiaDeNovena = async ({ params }: { params: { dia: string } }) => {
@@ -14,9 +16,9 @@ const DiaDeNovena = async ({ params }: { params: { dia: string } }) => {
       <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-gray-100">
         <h1 className="text-3xl font-bold mb-4">Día no encontrado</h1>
         <p>Por favor, selecciona un día válido de la novena.</p>
-        <a href="/" className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        <Link href="/" className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
           Volver al inicio
-        </a>
+        </Link>
       </div>
     );
   }
@@ -24,7 +26,7 @@ const DiaDeNovena = async ({ params }: { params: { dia: string } }) => {
   return (
     <div className="flex flex-col items-center min-h-screen p-4 sm:p-8 bg-black text-white font-[family-name:var(--font-geist-sans)]">
       <header className="w-full max-w-3xl text-center py-8 mb-8">
-        <a href="/" className="text-lg hover:underline mb-4 inline-block">← Volver al Inicio</a>
+        <Link href="/" className="text-lg hover:underline mb-4 inline-block">← Volver al Inicio</Link>
         <h1 className="text-4xl sm:text-5xl font-extrabold">Novena de Aguinaldos - Día {numeroDia}</h1>
       </header>
 

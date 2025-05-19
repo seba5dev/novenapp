@@ -1,7 +1,7 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import CountdownPage from "@/components/CountdownPage";
+import Link from "next/link";
 
 // Agrega esta constante para forzar la vista de diciembre en desarrollo
 const FORCE_DECEMBER_VIEW_IN_DEV = true; // Cambia a false para ver el contador
@@ -11,9 +11,9 @@ export default function Home() {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true); 
+    setIsClient(true);
     const date = new Date();
-    
+
     // Comprueba si estamos en desarrollo y si la constante para forzar la vista está activa
     if (process.env.NODE_ENV === 'development' && FORCE_DECEMBER_VIEW_IN_DEV) {
       setIsDecember(true);
@@ -53,13 +53,13 @@ export default function Home() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {Array.from({ length: 9 }, (_, i) => i + 1).map((dia) => (
-            <a
+            <Link
               key={dia}
               href={`/novena/dia-${dia}`}
               className="block p-6 bg-gray-800 rounded-lg shadow-md hover:bg-gray-700 transition-colors duration-300 ease-in-out text-center"
             >
               <h2 className="text-2xl font-semibold">Día {dia}</h2>
-            </a>
+            </Link>
           ))}
         </div>
       </main>
