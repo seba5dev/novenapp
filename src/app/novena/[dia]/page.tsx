@@ -4,9 +4,9 @@ import Link from "next/link";
 
 // Esta es una plantilla básica. Deberás crear contenido específico para cada día.
 // Cambiamos la firma para recibir params como un Server Component
-const DiaDeNovena = async ({ params }: { params: { dia: string } }) => {
+const DiaDeNovena = async ({ params }: { params: Promise<{ dia: string }> }) => {
   // dia contendrá 'dia-1', 'dia-2', etc. directamente de los parámetros de la ruta
-  const { dia } = params;
+  const { dia } = await params;
 
   // Extraer el número del día para mostrarlo o usarlo en la lógica
   const numeroDia = dia ? parseInt(String(dia).split('-')[1]) : null;
