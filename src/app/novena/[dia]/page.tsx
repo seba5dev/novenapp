@@ -24,7 +24,7 @@ const DiaDeNovena = async ({ params }: { params: Promise<{ dia: string }> }) => 
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-4 sm:p-8 bg-black text-white font-[family-name:var(--font-geist-sans)]">
+    <div className="flex flex-col items-center min-h-screen p-4 sm:p-8 bg-black text-white">
       <header className="w-full max-w-3xl text-center py-8 mb-8">
         <Link href="/" className="text-lg hover:underline mb-4 inline-block">← Volver al Inicio</Link>
         <h1 className="text-4xl sm:text-5xl font-extrabold">Novena de Aguinaldos - Día {numeroDia}</h1>
@@ -33,7 +33,7 @@ const DiaDeNovena = async ({ params }: { params: Promise<{ dia: string }> }) => 
       <main className="w-full max-w-3xl bg-gray-900 p-6 sm:p-8 rounded-lg shadow-xl mb-8">
         {/* Aquí irá el contenido específico de cada día de la novena */}
         <h2 className="text-2xl sm:text-3xl font-semibold mb-4">Oraciones para el Día {numeroDia}</h2>
-        
+
         <div className="space-y-6 text-left">
           <section>
             <h3 className="text-xl font-semibold mb-2">Oración para todos los días</h3>
@@ -72,7 +72,7 @@ const DiaDeNovena = async ({ params }: { params: Promise<{ dia: string }> }) => 
               <br />
               (Coro)
               <br />
-              ¡Oh, Sapiencia suma del Dios soberano, que a infantil alcance te rebajas sacro! ¡Oh, Divino Niño, ven para enseñarnos la prudencia que hace verdaderos sabios! 
+              ¡Oh, Sapiencia suma del Dios soberano, que a infantil alcance te rebajas sacro! ¡Oh, Divino Niño, ven para enseñarnos la prudencia que hace verdaderos sabios!
               <br />
               (Coro)
               {/* ... y así sucesivamente para todos los gozos ... */}

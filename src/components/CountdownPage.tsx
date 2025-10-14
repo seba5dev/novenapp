@@ -55,15 +55,15 @@ const CountdownPage = () => {
     // Durante el renderizado del lado del servidor o antes de la hidratación del cliente,
     // muestra un estado de carga para el contador.
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen text-center p-8 bg-gradient-to-br from-green-400 to-blue-500 text-white font-[family-name:var(--font-geist-sans)]">
-            <h1 className="text-5xl sm:text-7xl font-extrabold mb-4">NovenApp</h1>
-            <p className="text-xl sm:text-2xl mb-8">Cargando contador para la Navidad...</p>
-        </div>
+      <div className="flex flex-col items-center justify-center min-h-screen text-center p-8 bg-gradient-to-br from-green-400 to-blue-500 text-white">
+        <h1 className="text-5xl sm:text-7xl font-extrabold mb-4">NovenApp</h1>
+        <p className="text-xl sm:text-2xl mb-8">Cargando contador para la Navidad...</p>
+      </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center p-8 bg-gradient-to-br from-green-500 via-teal-500 to-blue-600 text-white font-[family-name:var(--font-geist-sans)]">
+    <div className="flex flex-col items-center justify-center min-h-screen text-center p-8 bg-gradient-to-br from-green-500 via-teal-500 to-blue-600 text-white">
       {/* Estilos en línea para los items del contador. Podrían moverse a un archivo CSS global. */}
       <style jsx global>{`
         .countdown-item-value {
