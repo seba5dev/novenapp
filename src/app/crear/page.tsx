@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import Link from "next/link";
+import { trackEvent } from "@/lib/gtag";
 
 /**
  * Página para crear una novena personalizada
@@ -22,6 +23,11 @@ export default function CrearNovena() {
     telefono: "",
     ciudad: "",
   });
+
+  // Trackear cuando el usuario abre el formulario
+  useEffect(() => {
+    trackEvent.crearNovenaIniciado();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,11 +68,18 @@ export default function CrearNovena() {
         throw new Error(data.error || 'Error al crear la novena');
       }
 
+      // Trackear éxito en la creación
+      trackEvent.crearNovenaCompletado(slug);
+
       // Redirigir a la página de gracias o a la novena creada
       router.push(`/gracias?slug=${slug}&nombre=${encodeURIComponent(formData.nombre)}`);
     } catch (error) {
       console.error("Error al crear novena:", error);
       const errorMessage = error instanceof Error ? error.message : "Hubo un error al crear tu novena. Por favor, intenta de nuevo.";
+
+      // Trackear error
+      trackEvent.crearNovenaError(errorMessage);
+
       setError(errorMessage);
       setLoading(false);
     }
@@ -267,6 +280,7 @@ export default function CrearNovena() {
               <Link
                 href="/terminos"
                 target="_blank"
+                onClick={() => trackEvent.verTerminos()}
                 className="text-green-600 hover:text-green-700 underline font-medium"
               >
                 términos y condiciones

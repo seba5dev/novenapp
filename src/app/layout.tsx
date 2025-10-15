@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Raleway } from "next/font/google";
 import { PWAInstaller } from "@/components/PWAInstaller";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { Analytics } from "@/components/Analytics";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import "./globals.css";
@@ -65,6 +67,8 @@ export default function RootLayout({
       <body
         className={`${raleway.variable} font-sans antialiased`}
       >
+        <GoogleAnalytics />
+        <Analytics />
         <PWAInstaller />
         <Header />
         <main className="min-h-screen">
