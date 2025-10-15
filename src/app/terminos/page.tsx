@@ -41,7 +41,7 @@ export default function TerminosPage() {
             <p className="text-gray-700 leading-relaxed">
               Bienvenido(a) a <strong>Novenapp</strong>, una experiencia digital creada y administrada por{" "}
               <strong>Bigle Technology</strong>, registrada ante la Cámara de Comercio de Bogotá bajo
-              matrícula mercantil vigente y <strong>NIT 1000048057-8</strong> (en adelante, "Bigle").
+              matrícula mercantil vigente y <strong>NIT 1000048057-8</strong> (en adelante, &ldquo;Bigle&rdquo;).
             </p>
             <p className="text-gray-700 leading-relaxed">
               El acceso y uso del sitio{" "}
