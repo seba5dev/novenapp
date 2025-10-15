@@ -1,14 +1,13 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { pageview, trackEvent } from '@/lib/gtag';
 
 /**
- * Componente que trackea las pageviews automáticamente
- * Se coloca en el layout principal
+ * Componente interno que trackea pageviews
  */
-export function Analytics() {
+function AnalyticsInternal() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -29,4 +28,17 @@ export function Analytics() {
   }, [pathname, searchParams]);
 
   return null;
+}
+
+/**
+ * Componente que trackea las pageviews automáticamente
+ * Se coloca en el layout principal
+ * Envuelto en Suspense para evitar errores de SSR
+ */
+export function Analytics() {
+  return (
+    <Suspense fallback={null}>
+      <AnalyticsInternal />
+    </Suspense>
+  );
 }
