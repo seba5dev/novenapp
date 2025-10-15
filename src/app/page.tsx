@@ -74,10 +74,10 @@ export default function Home() {
         </section>
 
         {/* Sección de características */}
-        <section className="py-20 px-4 bg-white/50 backdrop-blur-sm">
+        <section className="py-20 px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
-              Tu novena, tu manera
+              Tu novena, a tu manera
             </h2>
 
             <div className="grid md:grid-cols-3 gap-8 md:gap-12">
@@ -140,23 +140,6 @@ export default function Home() {
             </Link>
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className="py-8 px-4 text-center bg-white/30 backdrop-blur-sm border-t border-gray-200">
-          <p className="text-gray-700 text-lg">
-            Hecho con cariño por{" "}
-            <a
-              href="https://bigle.com.co"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-bold text-green-600 hover:text-green-700 transition-colors underline decoration-green-300 hover:decoration-green-500"
-              aria-label="Visitar sitio web de Bigle Technology"
-            >
-              Bigle Technology
-            </a>{" "}
-            <span className="inline-block animate-pulse">💚</span>
-          </p>
-        </footer>
       </div>
     </div>
   );

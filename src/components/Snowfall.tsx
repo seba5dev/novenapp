@@ -34,7 +34,7 @@ export default function Snowfall() {
       {snowflakes.map((flake) => (
         <div
           key={flake.id}
-          className="snowflake absolute top-0 rounded-full bg-white"
+          className="snowflake absolute top-0 rounded-full bg-green-500"
           style={{
             left: `${flake.left}%`,
             width: `${flake.size}px`,

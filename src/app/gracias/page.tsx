@@ -148,23 +148,6 @@ function GraciasContent() {
             </Link>
           </div>
         </div>
-
-        {/* Footer */}
-        <div className="text-center mt-8 text-gray-600">
-          <p>
-            Hecho con cariño por{" "}
-            <a
-              href="https://bigle.com.co"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-bold text-green-600 hover:text-green-700 underline decoration-green-300 hover:decoration-green-500"
-              aria-label="Visitar sitio web de Bigle Technology"
-            >
-              Bigle Technology
-            </a>{" "}
-            💚
-          </p>
-        </div>
       </div>
     </div>
   );

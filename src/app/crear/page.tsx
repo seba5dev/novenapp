@@ -261,7 +261,13 @@ export default function CrearNovena() {
           {/* Nota de privacidad */}
           <p className="text-xs text-gray-500 text-center">
             Al crear tu novena, aceptas que guardemos tu información para
-            enviarte el link personalizado. No compartiremos tus datos.
+            enviarte el link personalizado. No compartiremos tus datos.{" "}
+            <Link
+              href="/terminos"
+              className="text-green-600 hover:text-green-700 underline"
+            >
+              Ver términos
+            </Link>
           </p>
         </form>
       </div>

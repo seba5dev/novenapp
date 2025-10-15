@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Raleway } from "next/font/google";
 import { PWAInstaller } from "@/components/PWAInstaller";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const raleway = Raleway({
@@ -72,7 +74,11 @@ export default function RootLayout({
         className={`${raleway.variable} font-sans antialiased`}
       >
         <PWAInstaller />
-        {children}
+        <Header />
+        <main className="min-h-screen">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
