@@ -1,7 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Headers para PWA
+  // Compilación optimizada para navegadores modernos
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+  
+  // Transpilación mínima - solo navegadores modernos
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
+
+  // Headers para PWA y optimización
   async headers() {
     return [
       {
@@ -27,6 +37,19 @@ const nextConfig: NextConfig = {
           {
             key: "Cache-Control",
             value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
           },
         ],
       },
