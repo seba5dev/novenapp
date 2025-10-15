@@ -38,18 +38,16 @@ export function PWAInstaller() {
 
   // Manejar el evento beforeinstallprompt para mostrar el prompt de instalación
   useEffect(() => {
-    let deferredPrompt: BeforeInstallPromptEvent | null = null;
-
     const handleBeforeInstallPrompt = (e: Event) => {
       // Prevenir que Chrome muestre el prompt automáticamente
       e.preventDefault();
-      // Guardar el evento para mostrarlo más tarde
-      deferredPrompt = e as BeforeInstallPromptEvent;
 
       console.log("💾 PWA instalable detectada");
 
-      // Podrías mostrar un banner personalizado aquí
-      // Por ejemplo: mostrar un botón "Instalar App"
+      // Nota: Si quieres mostrar un banner personalizado de instalación,
+      // puedes guardar el evento aquí y usarlo más tarde:
+      // const deferredPrompt = e as BeforeInstallPromptEvent;
+      // Luego llamar deferredPrompt.prompt() cuando el usuario haga clic
     };
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
@@ -57,7 +55,6 @@ export function PWAInstaller() {
     // Detectar cuando la PWA fue instalada
     window.addEventListener("appinstalled", () => {
       console.log("✅ PWA instalada exitosamente");
-      deferredPrompt = null;
     });
 
     return () => {
