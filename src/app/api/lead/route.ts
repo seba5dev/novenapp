@@ -17,8 +17,13 @@ export async function POST(req: Request) {
       telefono,
       ciudad,
       slug,
-      utm_source
+      utm_source,
+      acepta_terminos
     } = await req.json();
+
+    // Obtener la IP del cliente
+    const forwarded = req.headers.get('x-forwarded-for');
+    const ip = forwarded ? forwarded.split(',')[0].trim() : req.headers.get('x-real-ip') || 'unknown';
 
     // Validaciones básicas
     if (!email) {
@@ -55,7 +60,7 @@ export async function POST(req: Request) {
     }
 
     // Preparar datos para enviar a Google Apps Script
-    // Incluye todos los campos: email, nombre, dedicatoria, telefono, ciudad, slug, utm_source
+    // Incluye todos los campos: email, nombre, dedicatoria, telefono, ciudad, slug, utm_source, acepta_terminos, ip
     const payload = {
       token: GS_SECRET_TOKEN,
       email: email.trim(),
@@ -65,6 +70,8 @@ export async function POST(req: Request) {
       ciudad: ciudad.trim(),
       slug: slug ? slug.trim() : '',
       utm_source: utm_source || 'direct',
+      acepta_terminos: acepta_terminos === true,
+      ip: ip,
     };
 
     // Enviar a Google Apps Script con timeout

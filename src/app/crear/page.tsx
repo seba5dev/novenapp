@@ -36,6 +36,7 @@ export default function CrearNovena() {
         .replace(/[^a-z0-9-]/g, '')}-${Date.now()}`;
 
       // Enviar datos a la API para registrar el lead
+      // Al hacer submit, automáticamente acepta los términos
       const response = await fetch('/api/lead', {
         method: 'POST',
         headers: {
@@ -48,6 +49,7 @@ export default function CrearNovena() {
           telefono: formData.telefono,
           ciudad: formData.ciudad,
           slug: slug, // ✨ Incluir el slug
+          acepta_terminos: true, // ✨ Aceptación implícita al crear
           utm_source: typeof window !== 'undefined'
             ? new URLSearchParams(window.location.search).get('utm_source') || 'direct'
             : 'direct',
@@ -258,17 +260,21 @@ export default function CrearNovena() {
             )}
           </Button>
 
-          {/* Nota de privacidad */}
-          <p className="text-xs text-gray-500 text-center">
-            Al crear tu novena, aceptas que guardemos tu información para
-            enviarte el link personalizado. No compartiremos tus datos.{" "}
-            <Link
-              href="/terminos"
-              className="text-green-600 hover:text-green-700 underline"
-            >
-              Ver términos
-            </Link>
-          </p>
+          {/* Aviso de términos y condiciones */}
+          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-xs text-gray-700 text-center leading-relaxed">
+              ℹ️ Al hacer clic en "Generar mi novena", aceptas nuestros{" "}
+              <Link
+                href="/terminos"
+                target="_blank"
+                className="text-green-600 hover:text-green-700 underline font-medium"
+              >
+                términos y condiciones
+              </Link>{" "}
+              y autorizas el uso de tu información para crear y compartir tu novena
+              digital. Tu información está protegida y no será compartida con terceros.
+            </p>
+          </div>
         </form>
       </div>
     </div>

@@ -10,6 +10,8 @@
  * - ciudad: Ciudad de residencia
  * - slug: Identificador único de la novena
  * - utm_source: Fuente de tráfico
+ * - acepta_terminos: Aceptación de términos y condiciones (Sí/No)
+ * - ip: Dirección IP del usuario
  * 
  * Endpoints:
  * - POST: Guardar nuevo lead
@@ -19,6 +21,7 @@
  * - Verifica SECRET_TOKEN
  * - Previene duplicados por email
  * - Lock para evitar race conditions
+ * - Requiere aceptación explícita de términos
  */
 
 const SHEET_NAME = 'Leads';
@@ -134,7 +137,7 @@ function doPost(e) {
     }
 
     // Extraer y validar campos
-    const { email, nombre, dedicatoria, telefono, ciudad, slug, utm_source } = body;
+    const { email, nombre, dedicatoria, telefono, ciudad, slug, utm_source, acepta_terminos, ip } = body;
     
     if (!email || !validateEmail(email)) {
       return json(400, { ok: false, error: 'Email requerido o inválido' });
@@ -146,6 +149,10 @@ function doPost(e) {
 
     if (!ciudad || String(ciudad).trim() === '') {
       return json(400, { ok: false, error: 'Ciudad es requerida' });
+    }
+
+    if (!acepta_terminos) {
+      return json(400, { ok: false, error: 'Debe aceptar los términos y condiciones' });
     }
 
     // Obtener/crear la hoja
@@ -168,7 +175,9 @@ function doPost(e) {
         'telefono',
         'ciudad',
         'slug',
-        'utm_source'
+        'utm_source',
+        'acepta_terminos',
+        'ip'
       ]);
 
       // Prevenir duplicados por email
@@ -210,7 +219,9 @@ function doPost(e) {
         telefonoFormateado,
         String(ciudad).trim(),
         slug ? String(slug).trim() : '',
-        utm_source ? String(utm_source).trim() : 'direct'
+        utm_source ? String(utm_source).trim() : 'direct',
+        acepta_terminos === true ? 'Sí' : 'No',
+        ip ? String(ip).trim() : ''
       ];
 
       // Insertar la fila
@@ -329,7 +340,9 @@ function testDoPost() {
         telefono: '+57 300 123 4567',
         ciudad: 'Bogotá',
         slug: 'juan-perez-garcia-1234567890',
-        utm_source: 'test'
+        utm_source: 'test',
+        acepta_terminos: true,
+        ip: '192.168.1.1'
       })
     }
   };
