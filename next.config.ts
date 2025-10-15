@@ -1,12 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // PWA configuration
-  experimental: {
-    // Optimizaciones para PWA
-    optimizeCss: true,
-  },
-
   // Headers para PWA
   async headers() {
     return [
