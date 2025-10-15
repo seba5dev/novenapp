@@ -59,10 +59,10 @@ export default function Countdown() {
       <div className="flex gap-4 justify-center">
         {[...Array(4)].map((_, i) => (
           <div key={i} className="text-center">
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 min-w-[80px] shadow-lg">
-              <div className="text-3xl md:text-5xl font-bold">--</div>
+            <div className="bg-gradient-to-br from-green-600 to-emerald-500 rounded-xl p-4 min-w-[80px] shadow-lg">
+              <div className="text-3xl md:text-5xl font-bold text-white">--</div>
             </div>
-            <p className="text-sm mt-2 text-white/80">---</p>
+            <p className="text-sm mt-2 text-gray-700">---</p>
           </div>
         ))}
       </div>
@@ -80,12 +80,12 @@ export default function Countdown() {
     <div className="flex gap-3 md:gap-4 justify-center flex-wrap">
       {timeUnits.map((unit, index) => (
         <div key={index} className="text-center">
-          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 md:p-4 min-w-[70px] md:min-w-[80px] shadow-lg border border-white/30 transition-transform hover:scale-105">
+          <div className="bg-gradient-to-br from-green-600 to-emerald-500 rounded-xl p-3 md:p-4 min-w-[70px] md:min-w-[80px] shadow-lg border border-green-700/20 transition-transform hover:scale-105 hover:shadow-xl">
             <div className="text-3xl md:text-5xl font-bold text-white tabular-nums">
               {String(unit.value).padStart(2, "0")}
             </div>
           </div>
-          <p className="text-xs md:text-sm mt-2 text-white/90 font-medium">
+          <p className="text-xs md:text-sm mt-2 text-gray-800 font-semibold">
             {unit.label}
           </p>
         </div>

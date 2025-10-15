@@ -14,8 +14,9 @@ import Link from "next/link";
 export default function CrearNovena() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    nombreFamilia: "",
+    nombre: "",
     dedicatoria: "",
     email: "",
     telefono: "",
@@ -25,20 +26,45 @@ export default function CrearNovena() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
-      // TODO: Integrar con Supabase para guardar la novena
-      // Por ahora, simular la creación con un delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Enviar datos a la API para registrar el lead
+      const response = await fetch('/api/lead', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nombre: formData.nombre,
+          dedicatoria: formData.dedicatoria,
+          email: formData.email,
+          telefono: formData.telefono,
+          ciudad: formData.ciudad,
+          utm_source: typeof window !== 'undefined'
+            ? new URLSearchParams(window.location.search).get('utm_source') || 'direct'
+            : 'direct',
+        }),
+      });
 
-      // Generar un ID único temporal (reemplazar con ID de Supabase)
-      const novenId = `nov-${Date.now()}`;
+      const data = await response.json();
 
-      // Redirigir a la página de la novena creada
-      router.push(`/novenas/${novenId}`);
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || 'Error al crear la novena');
+      }
+
+      // Generar un slug único basado en el nombre y timestamp
+      const slug = `${formData.nombre
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-]/g, '')}-${Date.now()}`;
+
+      // Redirigir a la página de gracias o a la novena creada
+      router.push(`/gracias?slug=${slug}&nombre=${encodeURIComponent(formData.nombre)}`);
     } catch (error) {
       console.error("Error al crear novena:", error);
-      alert("Hubo un error al crear tu novena. Por favor, intenta de nuevo.");
+      const errorMessage = error instanceof Error ? error.message : "Hubo un error al crear tu novena. Por favor, intenta de nuevo.";
+      setError(errorMessage);
       setLoading(false);
     }
   };
@@ -67,10 +93,13 @@ export default function CrearNovena() {
         {/* Encabezado */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Crea tu novena digital
+            Crea tu novena digital 🎄
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-gray-600 mb-2">
             Personaliza tu novena y compártela con tu familia
+          </p>
+          <p className="text-sm text-gray-500">
+            Solo te tomará 2 minutos • Campos marcados con <span className="text-red-500">*</span> son requeridos
           </p>
         </div>
 
@@ -79,22 +108,42 @@ export default function CrearNovena() {
           onSubmit={handleSubmit}
           className="bg-white rounded-2xl shadow-xl p-8 space-y-6"
         >
-          {/* Nombre de familia */}
+          {/* Mensaje de error */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg flex items-start gap-3">
+              <span className="text-xl">⚠️</span>
+              <div className="flex-1">
+                <p className="font-semibold">Error al crear la novena</p>
+                <p className="text-sm mt-1">{error}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setError(null)}
+                className="text-red-600 hover:text-red-800"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
+          {/* Nombre */}
           <div>
             <label
-              htmlFor="nombreFamilia"
+              htmlFor="nombre"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Nombre de tu familia <span className="text-red-500">*</span>
+              Tu nombre completo <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
-              id="nombreFamilia"
-              name="nombreFamilia"
+              id="nombre"
+              name="nombre"
               required
-              value={formData.nombreFamilia}
+              minLength={2}
+              maxLength={100}
+              value={formData.nombre}
               onChange={handleChange}
-              placeholder="Ej: Familia García"
+              placeholder="Ej: Juan García Pérez"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
             />
           </div>
@@ -114,9 +163,13 @@ export default function CrearNovena() {
               value={formData.dedicatoria}
               onChange={handleChange}
               rows={4}
-              placeholder="Ej: Con amor para toda nuestra familia, que esta Navidad nos una más que nunca..."
+              maxLength={500}
+              placeholder="Ej: Con amor para toda nuestra familia, que esta Navidad nos une más que nunca..."
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all resize-none"
             />
+            <p className="text-xs text-gray-500 mt-1">
+              {formData.dedicatoria.length}/500 caracteres
+            </p>
           </div>
 
           {/* Email */}
@@ -148,7 +201,7 @@ export default function CrearNovena() {
               htmlFor="telefono"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Teléfono (opcional)
+              Teléfono <span className="text-gray-400 text-sm">(opcional)</span>
             </label>
             <input
               type="tel"
@@ -159,6 +212,9 @@ export default function CrearNovena() {
               placeholder="+57 300 123 4567"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
             />
+            <p className="text-xs text-gray-500 mt-1">
+              Para contactarte en caso de ser necesario
+            </p>
           </div>
 
           {/* Ciudad */}
