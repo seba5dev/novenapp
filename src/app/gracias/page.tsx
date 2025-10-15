@@ -76,13 +76,15 @@ function GraciasContent() {
                 value={novenUrl}
                 readOnly
                 className="flex-1 px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-700 text-sm"
+                aria-label="URL de tu novena personalizada"
               />
               <Button
                 onClick={() => {
                   navigator.clipboard.writeText(novenUrl);
                   alert("¡Link copiado!");
                 }}
-                className="bg-gray-600 hover:bg-gray-700 text-white"
+                className="bg-gray-600 hover:bg-gray-700 text-white cursor-pointer"
+                aria-label="Copiar link al portapapeles"
               >
                 Copiar
               </Button>
@@ -92,7 +94,8 @@ function GraciasContent() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Button
                 onClick={handleShare}
-                className="bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white"
+                className="bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white cursor-pointer"
+                aria-label="Compartir novena por WhatsApp, email o redes sociales"
               >
                 <Share2 className="mr-2 h-4 w-4" />
                 Compartir novena
@@ -101,7 +104,8 @@ function GraciasContent() {
               <Link href={novenUrl}>
                 <Button
                   variant="outline"
-                  className="w-full border-green-600 text-green-600 hover:bg-green-50"
+                  className="w-full border-green-600 text-green-600 hover:bg-green-50 cursor-pointer"
+                  aria-label="Ver mi novena personalizada"
                 >
                   Ver mi novena
                 </Button>
@@ -122,16 +126,23 @@ function GraciasContent() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <a
-              href="https://bigle.co"
+              href="https://bigle.com.co"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button className="bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white">
+              <Button 
+                className="bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white cursor-pointer"
+                aria-label="Conocer más sobre Bigle Technology"
+              >
                 Conoce Bigle Technology
               </Button>
             </a>
             <Link href="/">
-              <Button variant="outline" className="border-gray-300 text-gray-700">
+              <Button 
+                variant="outline" 
+                className="border-gray-300 text-gray-700 hover:bg-gray-50 cursor-pointer"
+                aria-label="Volver a la página de inicio"
+              >
                 Volver al inicio
               </Button>
             </Link>
@@ -143,10 +154,11 @@ function GraciasContent() {
           <p>
             Hecho con cariño por{" "}
             <a
-              href="https://bigle.co"
+              href="https://bigle.com.co"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-bold text-green-600 hover:text-green-700"
+              className="font-bold text-green-600 hover:text-green-700 underline decoration-green-300 hover:decoration-green-500"
+              aria-label="Visitar sitio web de Bigle Technology"
             >
               Bigle Technology
             </a>{" "}

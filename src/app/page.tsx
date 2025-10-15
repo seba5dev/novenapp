@@ -52,7 +52,8 @@ export default function Home() {
               <Link href="/crear">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white text-lg px-8 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                  className="bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white text-lg px-8 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer"
+                  aria-label="Crear novena digital personalizada"
                 >
                   <Sparkles className="mr-2 h-5 w-5" />
                   Crea tu novena
@@ -131,7 +132,8 @@ export default function Home() {
             <Link href="/crear">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white text-lg px-8 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white text-lg px-8 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer"
+                aria-label="Crear mi novena digital personalizada gratis"
               >
                 Crear mi novena gratis
               </Button>
@@ -144,10 +146,11 @@ export default function Home() {
           <p className="text-gray-700 text-lg">
             Hecho con cariño por{" "}
             <a
-              href="https://bigle.co"
+              href="https://bigle.com.co"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-bold text-green-600 hover:text-green-700 transition-colors"
+              className="font-bold text-green-600 hover:text-green-700 transition-colors underline decoration-green-300 hover:decoration-green-500"
+              aria-label="Visitar sitio web de Bigle Technology"
             >
               Bigle Technology
             </a>{" "}

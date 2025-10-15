@@ -126,7 +126,10 @@ function NovenaPersonalizadaContent() {
             No pudimos encontrar esta novena. Por favor verifica el enlace.
           </p>
           <Link href="/">
-            <Button className="bg-green-600 hover:bg-green-700 text-white">
+            <Button 
+              className="bg-green-600 hover:bg-green-700 text-white cursor-pointer"
+              aria-label="Volver a la página de inicio"
+            >
               Volver al inicio
             </Button>
           </Link>
@@ -173,7 +176,8 @@ function NovenaPersonalizadaContent() {
             {/* Botón compartir */}
             <Button
               onClick={handleShare}
-              className="bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white"
+              className="bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white cursor-pointer"
+              aria-label="Compartir esta novena por WhatsApp, email o redes sociales"
             >
               <Share2 className="mr-2 h-4 w-4" />
               Compartir esta novena
@@ -193,10 +197,12 @@ function NovenaPersonalizadaContent() {
               <button
                 key={dia.numero}
                 onClick={() => setCurrentDay(dia.numero)}
-                className={`p-4 rounded-lg border-2 transition-all ${currentDay === dia.numero
+                className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${currentDay === dia.numero
                   ? 'border-green-600 bg-green-50 text-green-600'
                   : 'border-gray-200 hover:border-green-300'
                   }`}
+                aria-label={`Seleccionar día ${dia.numero} - ${dia.fecha}`}
+                aria-pressed={currentDay === dia.numero}
               >
                 <div className="text-lg font-bold">Día {dia.numero}</div>
                 <div className="text-xs text-gray-600 mt-1">
@@ -275,13 +281,16 @@ function NovenaPersonalizadaContent() {
               onClick={() => setCurrentDay(Math.max(1, currentDay - 1))}
               disabled={currentDay === 1}
               variant="outline"
+              className="cursor-pointer disabled:cursor-not-allowed"
+              aria-label="Ir al día anterior"
             >
               ← Día anterior
             </Button>
             <Button
               onClick={() => setCurrentDay(Math.min(9, currentDay + 1))}
               disabled={currentDay === 9}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-white cursor-pointer disabled:cursor-not-allowed"
+              aria-label="Ir al día siguiente"
             >
               Día siguiente →
             </Button>
@@ -293,10 +302,11 @@ function NovenaPersonalizadaContent() {
           <p>
             Hecho con cariño por{" "}
             <a
-              href="https://bigle.co"
+              href="https://bigle.com.co"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-bold text-green-600 hover:text-green-700"
+              className="font-bold text-green-600 hover:text-green-700 underline decoration-green-300 hover:decoration-green-500"
+              aria-label="Visitar sitio web de Bigle Technology"
             >
               Bigle Technology
             </a>{" "}
