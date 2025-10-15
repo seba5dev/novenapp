@@ -1,10 +1,10 @@
 # 📝 Google Apps Script para Novenapp
 
-Este directorio contiene el código del Google Apps Script que captura los leads del formulario de Novenapp.
+Este directorio contiene el código del Google Apps Script que captura y consulta los leads del formulario de Novenapp.
 
 ## 📋 Archivo
 
-- **`Code.gs`** - Script principal con la función `doPost()`
+- **`Code.gs`** - Script principal con funciones `doPost()` (guardar) y `doGet()` (consultar)
 
 ## 🚀 Instalación
 

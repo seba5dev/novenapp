@@ -16,6 +16,7 @@ export async function POST(req: Request) {
       dedicatoria,
       telefono,
       ciudad,
+      slug,
       utm_source
     } = await req.json();
 
@@ -54,7 +55,7 @@ export async function POST(req: Request) {
     }
 
     // Preparar datos para enviar a Google Apps Script
-    // Incluye todos los campos: email, nombre, dedicatoria, telefono, ciudad, utm_source
+    // Incluye todos los campos: email, nombre, dedicatoria, telefono, ciudad, slug, utm_source
     const payload = {
       token: GS_SECRET_TOKEN,
       email: email.trim(),
@@ -62,6 +63,7 @@ export async function POST(req: Request) {
       dedicatoria: dedicatoria ? dedicatoria.trim() : '',
       telefono: telefono ? telefono.trim() : '',
       ciudad: ciudad.trim(),
+      slug: slug ? slug.trim() : '',
       utm_source: utm_source || 'direct',
     };
 

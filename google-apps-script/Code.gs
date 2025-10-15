@@ -4,11 +4,16 @@
  * Campos capturados:
  * - timestamp: Fecha y hora de registro
  * - email: Email del usuario
- * - nombre: Nombre de la familia
+ * - nombre: Nombre completo de la persona
  * - dedicatoria: Dedicatoria especial
  * - telefono: Teléfono (opcional)
  * - ciudad: Ciudad de residencia
+ * - slug: Identificador único de la novena
  * - utm_source: Fuente de tráfico
+ * 
+ * Endpoints:
+ * - POST: Guardar nuevo lead
+ * - GET: Obtener datos de novena por slug
  * 
  * Seguridad:
  * - Verifica SECRET_TOKEN
@@ -19,6 +24,97 @@
 const SHEET_NAME = 'Leads';
 const SECRET_TOKEN = PropertiesService.getScriptProperties().getProperty('SECRET_TOKEN') || '';
 
+/**
+ * ===================================
+ * ENDPOINT GET: Obtener datos de novena
+ * ===================================
+ * 
+ * Uso: https://script.google.com/.../exec?slug=juan-perez-123456&token=SECRET_TOKEN
+ * 
+ * Devuelve:
+ * {
+ *   "ok": true,
+ *   "data": {
+ *     "nombre": "Juan Pérez",
+ *     "dedicatoria": "Para mi familia",
+ *     "ciudad": "Bogotá"
+ *   }
+ * }
+ */
+function doGet(e) {
+  try {
+    // Verificar que hay parámetros
+    if (!e || !e.parameter) {
+      return json(400, { ok: false, error: 'No hay parámetros' });
+    }
+
+    const { slug, token } = e.parameter;
+
+    // Seguridad: Verificar token
+    if (!token || token !== SECRET_TOKEN) {
+      return json(401, { ok: false, error: 'Token inválido' });
+    }
+
+    // Validar slug
+    if (!slug || String(slug).trim() === '') {
+      return json(400, { ok: false, error: 'Slug es requerido' });
+    }
+
+    // Buscar en la hoja
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    if (!sheet) {
+      return json(500, { ok: false, error: 'Hoja no encontrada' });
+    }
+
+    const data = sheet.getDataRange().getValues();
+    const headers = data[0];
+    
+    // Encontrar índices de columnas
+    const slugIndex = headers.indexOf('slug');
+    const nombreIndex = headers.indexOf('nombre');
+    const dedicatoriaIndex = headers.indexOf('dedicatoria');
+    const ciudadIndex = headers.indexOf('ciudad');
+
+    if (slugIndex === -1) {
+      return json(500, { ok: false, error: 'Columna slug no encontrada' });
+    }
+
+    // Buscar fila con el slug
+    let foundRow = null;
+    for (let i = 1; i < data.length; i++) {
+      if (data[i][slugIndex] === slug) {
+        foundRow = data[i];
+        break;
+      }
+    }
+
+    if (!foundRow) {
+      return json(404, { ok: false, error: 'Novena no encontrada' });
+    }
+
+    // Preparar respuesta
+    const response = {
+      ok: true,
+      data: {
+        nombre: nombreIndex !== -1 ? foundRow[nombreIndex] : '',
+        dedicatoria: dedicatoriaIndex !== -1 ? foundRow[dedicatoriaIndex] : '',
+        ciudad: ciudadIndex !== -1 ? foundRow[ciudadIndex] : ''
+      }
+    };
+
+    return json(200, response);
+
+  } catch (error) {
+    Logger.log('Error en doGet: ' + error.toString());
+    return json(500, { ok: false, error: 'Error interno: ' + error.message });
+  }
+}
+
+/**
+ * ===================================
+ * ENDPOINT POST: Guardar lead
+ * ===================================
+ */
 function doPost(e) {
   try {
     // Validar que hay datos en el POST
@@ -38,14 +134,14 @@ function doPost(e) {
     }
 
     // Extraer y validar campos
-    const { email, nombre, dedicatoria, telefono, ciudad, utm_source } = body;
+    const { email, nombre, dedicatoria, telefono, ciudad, slug, utm_source } = body;
     
     if (!email || !validateEmail(email)) {
       return json(400, { ok: false, error: 'Email requerido o inválido' });
     }
 
     if (!nombre || String(nombre).trim() === '') {
-      return json(400, { ok: false, error: 'Nombre de familia es requerido' });
+      return json(400, { ok: false, error: 'Nombre es requerido' });
     }
 
     if (!ciudad || String(ciudad).trim() === '') {
@@ -71,6 +167,7 @@ function doPost(e) {
         'dedicatoria',
         'telefono',
         'ciudad',
+        'slug',
         'utm_source'
       ]);
 
@@ -112,6 +209,7 @@ function doPost(e) {
         dedicatoria ? String(dedicatoria).trim() : '',
         telefonoFormateado,
         String(ciudad).trim(),
+        slug ? String(slug).trim() : '',
         utm_source ? String(utm_source).trim() : 'direct'
       ];
 
@@ -211,8 +309,13 @@ function json(status, obj) {
 }
 
 /**
- * Función de test (opcional)
- * Para probar desde el editor de Google Apps Script
+ * ===================================
+ * FUNCIONES DE TEST
+ * ===================================
+ */
+
+/**
+ * Test para doPost
  */
 function testDoPost() {
   const mockEvent = {
@@ -221,15 +324,31 @@ function testDoPost() {
       contents: JSON.stringify({
         token: SECRET_TOKEN,
         email: 'test@example.com',
-        nombre: 'Familia Test',
-        dedicatoria: 'Esta es una dedicatoria de prueba',
+        nombre: 'Juan Pérez García',
+        dedicatoria: 'Para mi familia con todo mi amor',
         telefono: '+57 300 123 4567',
         ciudad: 'Bogotá',
+        slug: 'juan-perez-garcia-1234567890',
         utm_source: 'test'
       })
     }
   };
   
   const response = doPost(mockEvent);
+  Logger.log(response.getContent());
+}
+
+/**
+ * Test para doGet
+ */
+function testDoGet() {
+  const mockEvent = {
+    parameter: {
+      token: SECRET_TOKEN,
+      slug: 'juan-perez-garcia-1234567890'
+    }
+  };
+  
+  const response = doGet(mockEvent);
   Logger.log(response.getContent());
 }

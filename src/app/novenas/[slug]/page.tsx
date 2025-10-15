@@ -2,9 +2,18 @@
 
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Suspense, useState } from "react";
-import { ArrowLeft, Share2, Calendar } from "lucide-react";
+import { Suspense, useState, useEffect } from "react";
+import { ArrowLeft, Share2, Calendar, Heart, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+/**
+ * Interface para los datos de la novena
+ */
+interface NovenaData {
+  nombre: string;
+  dedicatoria: string;
+  ciudad: string;
+}
 
 /**
  * Contenido de la novena personalizada
@@ -13,14 +22,56 @@ function NovenaPersonalizadaContent() {
   const params = useParams();
   const slug = params.slug as string;
 
-  // Extraer el nombre del slug (todo excepto el timestamp)
+  const [currentDay, setCurrentDay] = useState(1);
+  const [novenaData, setNovenaData] = useState<NovenaData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Cargar datos de la novena desde la API
+  useEffect(() => {
+    async function fetchNovenaData() {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/novena/${slug}`);
+
+        if (!response.ok) {
+          if (response.status === 404) {
+            setError("Novena no encontrada");
+          } else {
+            setError("Error al cargar la novena");
+          }
+          return;
+        }
+
+        const result = await response.json();
+
+        if (result.ok && result.data) {
+          setNovenaData(result.data);
+        } else {
+          setError("No se pudieron cargar los datos");
+        }
+      } catch (err) {
+        console.error("Error al cargar novena:", err);
+        setError("Error de conexión");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (slug) {
+      fetchNovenaData();
+    }
+  }, [slug]);
+
+  // Extraer el nombre del slug como fallback
   const nombreFromSlug = slug
     ?.split('-')
-    .slice(0, -1) // Quitar el timestamp final
+    .slice(0, -1)
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ') || 'Familia';
 
-  const [currentDay, setCurrentDay] = useState(1);
+  // Usar el nombre de la API o el del slug como fallback
+  const nombreDisplay = novenaData?.nombre || nombreFromSlug;
 
   const handleShare = async () => {
     const url = typeof window !== 'undefined' ? window.location.href : '';
@@ -28,7 +79,7 @@ function NovenaPersonalizadaContent() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `Novena de ${nombreFromSlug}`,
+          title: `Novena de ${nombreDisplay}`,
           text: `¡Únete a nuestra novena de aguinaldos digital del 16 al 24 de diciembre!`,
           url: url,
         });
@@ -53,6 +104,37 @@ function NovenaPersonalizadaContent() {
     { numero: 9, fecha: "24 de diciembre", tema: "La adoración de los Reyes Magos" },
   ];
 
+  // Mostrar loading
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#f7f3ef] via-[#fdfbf7] to-[#f5f1ed] flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-green-600 mx-auto mb-4" />
+          <p className="text-gray-600">Cargando tu novena...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Mostrar error
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#f7f3ef] via-[#fdfbf7] to-[#f5f1ed] flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-xl p-8 text-center max-w-md">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">😔 {error}</h2>
+          <p className="text-gray-600 mb-6">
+            No pudimos encontrar esta novena. Por favor verifica el enlace.
+          </p>
+          <Link href="/">
+            <Button className="bg-green-600 hover:bg-green-700 text-white">
+              Volver al inicio
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f7f3ef] via-[#fdfbf7] to-[#f5f1ed] py-12 px-4">
       <div className="max-w-4xl mx-auto">
@@ -71,8 +153,19 @@ function NovenaPersonalizadaContent() {
               Novena de Aguinaldos 🎄
             </h1>
             <p className="text-2xl text-green-600 font-semibold mb-2">
-              {nombreFromSlug}
+              {nombreDisplay}
             </p>
+
+            {/* Mostrar dedicatoria si existe */}
+            {novenaData?.dedicatoria && (
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4 mb-4 border border-green-100">
+                <Heart className="inline-block h-5 w-5 text-green-600 mb-1" />
+                <p className="text-gray-700 italic">
+                  "{novenaData.dedicatoria}"
+                </p>
+              </div>
+            )}
+
             <p className="text-gray-600 mb-6">
               Del 16 al 24 de diciembre • 9 días de oración y reflexión
             </p>
@@ -101,8 +194,8 @@ function NovenaPersonalizadaContent() {
                 key={dia.numero}
                 onClick={() => setCurrentDay(dia.numero)}
                 className={`p-4 rounded-lg border-2 transition-all ${currentDay === dia.numero
-                    ? 'border-green-600 bg-green-50 text-green-600'
-                    : 'border-gray-200 hover:border-green-300'
+                  ? 'border-green-600 bg-green-50 text-green-600'
+                  : 'border-gray-200 hover:border-green-300'
                   }`}
               >
                 <div className="text-lg font-bold">Día {dia.numero}</div>

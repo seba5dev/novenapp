@@ -29,6 +29,12 @@ export default function CrearNovena() {
     setError(null);
 
     try {
+      // Generar un slug único ANTES de enviar (para incluirlo en el POST)
+      const slug = `${formData.nombre
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-]/g, '')}-${Date.now()}`;
+
       // Enviar datos a la API para registrar el lead
       const response = await fetch('/api/lead', {
         method: 'POST',
@@ -41,6 +47,7 @@ export default function CrearNovena() {
           email: formData.email,
           telefono: formData.telefono,
           ciudad: formData.ciudad,
+          slug: slug, // ✨ Incluir el slug
           utm_source: typeof window !== 'undefined'
             ? new URLSearchParams(window.location.search).get('utm_source') || 'direct'
             : 'direct',
@@ -52,12 +59,6 @@ export default function CrearNovena() {
       if (!response.ok || !data.ok) {
         throw new Error(data.error || 'Error al crear la novena');
       }
-
-      // Generar un slug único basado en el nombre y timestamp
-      const slug = `${formData.nombre
-        .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^a-z0-9-]/g, '')}-${Date.now()}`;
 
       // Redirigir a la página de gracias o a la novena creada
       router.push(`/gracias?slug=${slug}&nombre=${encodeURIComponent(formData.nombre)}`);
