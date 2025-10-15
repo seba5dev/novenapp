@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     // Optimizaciones para PWA
     optimizeCss: true,
   },
-  
+
   // Headers para PWA
   async headers() {
     return [

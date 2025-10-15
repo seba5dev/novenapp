@@ -126,7 +126,7 @@ function NovenaPersonalizadaContent() {
             No pudimos encontrar esta novena. Por favor verifica el enlace.
           </p>
           <Link href="/">
-            <Button 
+            <Button
               className="bg-green-600 hover:bg-green-700 text-white cursor-pointer"
               aria-label="Volver a la página de inicio"
             >

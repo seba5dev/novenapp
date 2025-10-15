@@ -130,7 +130,7 @@ function GraciasContent() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button 
+              <Button
                 className="bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white cursor-pointer"
                 aria-label="Conocer más sobre Bigle Technology"
               >
@@ -138,8 +138,8 @@ function GraciasContent() {
               </Button>
             </a>
             <Link href="/">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="border-gray-300 text-gray-700 hover:bg-gray-50 cursor-pointer"
                 aria-label="Volver a la página de inicio"
               >

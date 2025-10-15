@@ -26,7 +26,11 @@
       "type": "image/png"
     }
   ],
-  "categories": ["lifestyle", "entertainment", "social"],
+  "categories": [
+    "lifestyle",
+    "entertainment",
+    "social"
+  ],
   "screenshots": [
     {
       "src": "/screenshot-mobile.png",

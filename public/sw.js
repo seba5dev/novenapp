@@ -17,14 +17,14 @@ const STATIC_ASSETS = [
 // Instalación del service worker
 self.addEventListener('install', (event) => {
   console.log('[SW] Installing service worker...');
-  
+
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => {
       console.log('[SW] Caching static assets');
       return cache.addAll(STATIC_ASSETS);
     })
   );
-  
+
   // Activar inmediatamente
   self.skipWaiting();
 });
@@ -32,7 +32,7 @@ self.addEventListener('install', (event) => {
 // Activación del service worker
 self.addEventListener('activate', (event) => {
   console.log('[SW] Activating service worker...');
-  
+
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -45,7 +45,7 @@ self.addEventListener('activate', (event) => {
       );
     })
   );
-  
+
   // Tomar control inmediatamente
   return self.clients.claim();
 });
@@ -61,8 +61,8 @@ self.addEventListener('fetch', (event) => {
   }
 
   // No cachear peticiones a APIs externas (Google Apps Script)
-  if (url.hostname.includes('script.google.com') || 
-      url.hostname.includes('googleapis.com')) {
+  if (url.hostname.includes('script.google.com') ||
+    url.hostname.includes('googleapis.com')) {
     return;
   }
 
@@ -73,12 +73,12 @@ self.addEventListener('fetch', (event) => {
         // Si la respuesta es válida, clonarla y guardarla en cache
         if (response && response.status === 200) {
           const responseClone = response.clone();
-          
+
           caches.open(DYNAMIC_CACHE).then((cache) => {
             cache.put(request, responseClone);
           });
         }
-        
+
         return response;
       })
       .catch(() => {
@@ -87,12 +87,12 @@ self.addEventListener('fetch', (event) => {
           if (cachedResponse) {
             return cachedResponse;
           }
-          
+
           // Si no está en cache y es una navegación, devolver la página principal
           if (request.mode === 'navigate') {
             return caches.match('/');
           }
-          
+
           // Para otros recursos, devolver una respuesta vacía
           return new Response('Offline', {
             status: 503,
@@ -109,7 +109,7 @@ self.addEventListener('fetch', (event) => {
 // Sincronización en background (opcional)
 self.addEventListener('sync', (event) => {
   console.log('[SW] Background sync:', event.tag);
-  
+
   if (event.tag === 'sync-leads') {
     event.waitUntil(
       // Aquí puedes implementar lógica para sincronizar leads pendientes
@@ -121,7 +121,7 @@ self.addEventListener('sync', (event) => {
 // Push notifications (opcional para futuras funcionalidades)
 self.addEventListener('push', (event) => {
   console.log('[SW] Push notification received');
-  
+
   const options = {
     body: event.data ? event.data.text() : 'Nueva actualización de Novenapp',
     icon: '/icon-192.png',
@@ -142,7 +142,7 @@ self.addEventListener('push', (event) => {
       },
     ],
   };
-  
+
   event.waitUntil(
     self.registration.showNotification('Novenapp', options)
   );
@@ -151,9 +151,9 @@ self.addEventListener('push', (event) => {
 // Manejo de clicks en notificaciones
 self.addEventListener('notificationclick', (event) => {
   console.log('[SW] Notification clicked:', event.action);
-  
+
   event.notification.close();
-  
+
   if (event.action === 'explore') {
     event.waitUntil(
       clients.openWindow('/')

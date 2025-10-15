@@ -45,9 +45,9 @@ export function PWAInstaller() {
       e.preventDefault();
       // Guardar el evento para mostrarlo más tarde
       deferredPrompt = e as BeforeInstallPromptEvent;
-      
+
       console.log("💾 PWA instalable detectada");
-      
+
       // Podrías mostrar un banner personalizado aquí
       // Por ejemplo: mostrar un botón "Instalar App"
     };
