@@ -263,7 +263,7 @@ export default function CrearNovena() {
           {/* Aviso de términos y condiciones */}
           <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <p className="text-xs text-gray-700 text-center leading-relaxed">
-              ℹ️ Al hacer clic en "Generar mi novena", aceptas nuestros{" "}
+              ℹ️ Al hacer clic en &ldquo;Generar mi novena&rdquo;, aceptas nuestros{" "}
               <Link
                 href="/terminos"
                 target="_blank"
