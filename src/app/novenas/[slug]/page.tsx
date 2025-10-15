@@ -161,7 +161,7 @@ function NovenaPersonalizadaContent() {
               <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4 mb-4 border border-green-100">
                 <Heart className="inline-block h-5 w-5 text-green-600 mb-1" />
                 <p className="text-gray-700 italic">
-                  "{novenaData.dedicatoria}"
+                  &ldquo;{novenaData.dedicatoria}&rdquo;
                 </p>
               </div>
             )}

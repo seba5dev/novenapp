@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
-import { CheckCircle, Share2, Mail, Download } from "lucide-react";
+import { CheckCircle, Share2, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /**

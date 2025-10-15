@@ -121,9 +121,11 @@ export async function POST(req: Request) {
       { status: 200 }
     );
 
-  } catch (err: any) {
+  } catch (err: unknown) {
     // Manejo de errores específicos
-    if (err.name === 'AbortError') {
+    const error = err as Error & { name?: string };
+
+    if (error.name === 'AbortError') {
       console.error('Request timeout');
       return NextResponse.json(
         { ok: false, error: 'Tiempo de espera agotado' },
