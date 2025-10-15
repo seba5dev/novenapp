@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Raleway } from "next/font/google";
 import { PWAInstaller } from "@/components/PWAInstaller";
 import Header from "@/components/Header";
@@ -10,6 +10,13 @@ const raleway = Raleway({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#16a34a",
+};
 
 export const metadata: Metadata = {
   title: "Novenapp — Tu novena digital 2025",
@@ -46,12 +53,6 @@ export const metadata: Metadata = {
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
   },
-  themeColor: "#16a34a",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-  },
 };
 
 export default function RootLayout({
@@ -61,15 +62,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <head>
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Novenapp" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#16a34a" />
-      </head>
       <body
         className={`${raleway.variable} font-sans antialiased`}
       >
